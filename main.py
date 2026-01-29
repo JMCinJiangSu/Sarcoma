@@ -118,7 +118,7 @@ cnv_transcript_cp40 = {
 	"EGFR" : "NM_005228.5",
     #2026年1月15日，模板升级新增检测CNV基因转录本，MDM2, GLI1, AKT2, CCNE1, CDH1, CDK6, ESR1, FGF19, FGFR1, FGFR2, FGFR3, FLT3, GLI2, PDCD1LG2, RAF1, RICTOR, VEGFA
     "MDM2" : "NM_002392.5",
-    "GLI1" : "NM_005269.4"，
+    "GLI1" : "NM_005269.4",
     "AKT2" : "NM_001626.4",
     "CCNE1" : "NM_001238.5",
     "CDH1" : "NM_004360.5",
@@ -348,14 +348,10 @@ class Base:
             if i["bio_category"] in ["Cnv", "Sv", "PSeqRnaSv"]:
                    i["clinic_g"] = clinic_strans_g.get(i["function_classification"])
                    i["clinic_s"] = clinic_strans_s.get(i["function_classification"])
-                   i["clinic_num_g"] = clinic_strans_g_num.get(i["function_classification"], 3)
-                   i["clinic_num_s"] = clinic_strans_s_num.get(i["function_classification"], 3)
             else:
                 if i["clinical_significance"] != "-" or i["function_classification"] != "-":
                     i["clinic_g"] = clinic_strans_g.get(i["clinical_significance"]) if i["clinical_significance"] != "-" else clinic_strans_g.get(i["function_classification"])
                     i["clinic_s"] = clinic_strans_s.get(i["function_classification"]) if i["function_classification"] != "-" else clinic_strans_s.get(i["clinical_significance"])
-                    i["clinic_num_g"] = clinic_strans_g_num.get(i["clinical_significance"], 3) if i["clinical_significance"] != "-" else clinic_strans_g_num.get(i["function_classification"], 3)
-                    i["clinic_num_s"] = clinic_strans_s_num.get(i["function_classification"], 3) if i["function_classification"] != "-" else clinic_strans_s_num.get(i["clinical_significance"], 3)
 
             # CNV变异类型 可改为拷贝数变异，检测结果维持 转录本+扩增不变
             i["type_cn"] = "拷贝数变异" if i["bio_category"] == "Cnv" else "融合" if i["bio_category"] == "PSeqRnaSv" else "非移码突变" \
@@ -375,9 +371,7 @@ class Base:
             i["regimen"] = []
             # 删除"KRAS", "HRAS", "NRAS", "PIK3CA", "FGFR4", "TP53"的诊断证据
             if 'evi_sum' in i.keys() and i['evi_sum']:
-                #2026年1月14日 模板更新，保留TP53和PIK3CA的诊断证据
-                if i['gene_symbol'] in ["KRAS", "HRAS", "NRAS", "FGFR4"]:
-                #if i['gene_symbol'] in ["KRAS", "HRAS", "NRAS", "PIK3CA", "FGFR4", "TP53"]:
+                if i['gene_symbol'] in ["KRAS", "HRAS", "NRAS", "PIK3CA", "FGFR4", "TP53"]:
                     i['evi_sum'] = [item for item in i['evi_sum'] if item['evidence_type'] != 'Diagnostic']
             
             if "evi_sum" in i.keys() and i["evi_sum"]:
@@ -859,10 +853,6 @@ class Base:
                 ("PAX3", "INO80D")
             ]
         },
-        "RMS_result" : {
-            "type" : "snvindel",
-            "genes" : ["PIK3CA", "TP53"]
-        },
         "NCOA2_result" : {
             "type" : "fusion_ordered",
             "pairs" : [
@@ -1063,10 +1053,6 @@ class Base:
         "SMARCA4_result" : {
             "type" : "snvindel",
             "genes" : ["SMARCA4"]
-        },
-        "SDH_result" : {
-            "type" : "fusion_any",
-            "genes" : ["SDHA", "SDHB", "SDHC", "SDHD"]
         },
         "NUTM1_result" : {
             "type" : "fusion_any",
