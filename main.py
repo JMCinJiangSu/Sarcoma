@@ -1096,7 +1096,9 @@ class Base:
     
     def get_sarcoma_result(self):
         results = {k: [] for k in self.SARCOMA_RULES.keys()}
-        for var in self._var_list():
+        var_list = self._var_list()
+        var_list = [var for var in var_list if var['level_str'] in ['I类', 'II类']]
+        for var in var_list:
             for result_key, rule in self.SARCOMA_RULES.items():
                 if self._match_sarcoma_rule(var, rule):
                     if var["bio_category"] == "PSeqRnaSv":
@@ -1538,7 +1540,7 @@ class Base:
         :return:
         """
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(base_dir, 'template', 'RNASeqSarcoma-CustomEdition-hospital-ZJZL-v14.docx')
+        path = os.path.join(base_dir, 'template', 'RNASeqSarcoma-CustomEdition-hospital-ZJZL-v15.docx')
         tpl = docxtpl.DocxTemplate(path)
         tpl.render(self.data_js)
         tpl.save(os.path.join(self.output_div, self.json_name + '.docx'))
