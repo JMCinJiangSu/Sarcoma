@@ -1540,7 +1540,7 @@ class Base:
         :return:
         """
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(base_dir, 'template', 'RNASeqSarcoma-CustomEdition-hospital-ZJZL-v15.docx')
+        path = os.path.join(base_dir, 'template', 'RNASeqSarcoma-CustomEdition-hospital-ZJZL-v16.docx')
         tpl = docxtpl.DocxTemplate(path)
         tpl.render(self.data_js)
         tpl.save(os.path.join(self.output_div, self.json_name + '.docx'))
